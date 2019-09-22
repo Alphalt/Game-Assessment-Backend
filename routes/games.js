@@ -34,6 +34,7 @@ router.post('/start', async (req, res) => {
 router.put('/finish', async (req, res) => {
     const game = await Game.findById(req.body.gameId);
     if (!game) return res.status(400).send('Invalid game.');
+    if (!game.isPlaying) return res.status(400).send('The game is not active.');
     if (game.rounds.length < game.numberOfRounds) return res.status(400).send('The game is not over.');
 
     const identifiers = [];
