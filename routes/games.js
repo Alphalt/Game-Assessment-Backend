@@ -1,6 +1,7 @@
 const { Game, validateGame } = require('../models/game');
 const { Player, validatePlayer } = require('../models/player');
 const { getCountOfPoints, getGameWinner } = require('../classes/game-logic');
+const { Messages } = require('../properties/errors-and-messages');
 const express = require('express');
 const router = express.Router();
 
@@ -33,9 +34,9 @@ router.post('/start', async (req, res) => {
 
 router.put('/finish', async (req, res) => {
     const game = await Game.findById(req.body.gameId);
-    if (!game) return res.status(400).send('Invalid game.');
-    if (!game.isPlaying) return res.status(400).send('The game is not active.');
-    if (game.rounds.length < game.numberOfRounds) return res.status(400).send('The game is not over.');
+    if (!game) return res.status(400).send(Messages.INVALIDGAME);
+    if (!game.isPlaying) return res.status(400).send(Messages.INACTIVEGAME);
+    if (game.rounds.length < game.numberOfRounds) return res.status(400).send(Messages.ACTIVEGAME);
 
     const identifiers = [];
     game.rounds.map((round) => {
