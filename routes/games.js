@@ -1,8 +1,8 @@
 const { Game, validateGame } = require('../models/game');
 const { Player, validatePlayer } = require('../models/player');
+const { getCountOfPoints, getGameWinner } = require('../classes/game-logic');
 const express = require('express');
 const router = express.Router();
-const _ = require('lodash');
 
 router.post('/start', async (req, res) => {
     req.body.players.map(player => {
@@ -30,5 +30,30 @@ router.post('/start', async (req, res) => {
         res.status(200).send(game);
     });
 });
+
+router.put('/finish', async (req, res) => {
+    const game = await Game.findById(req.body.gameId);
+    if (!game) return res.status(400).send('Invalid game.');
+    if (game.rounds.length < game.numberOfRounds) return res.status(400).send('The game is not over.');
+
+    const identifiers = [];
+    game.rounds.map((round) => {
+        identifiers.push(round.winner);
+    });
+
+    const count = getCountOfPoints(identifiers);
+    const identifierOfWinner = getGameWinner(count);
+
+    const winner = null;
+    game.players.map((player) => {
+        if(player.number === parseInt(identifierOfWinner)) winner = player;
+    });
+
+    game.winner = winner;
+    game.isPlaying = false;
+    await game.save();
+
+    res.status(200).send(game);
+})
 
 module.exports = router;

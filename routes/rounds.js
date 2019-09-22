@@ -1,12 +1,8 @@
 const { Game } = require('../models/game');
 const { Round, validateRound } = require('../models/round');
 const { getRoundWinner, getWinnerIdentifier } = require('../classes/game-logic');
-const Fawn = require('fawn');
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
-
-Fawn.init(mongoose);
 
 router.post('/move', async (req, res) => {
     const { error } = validateRound(req.body.round);

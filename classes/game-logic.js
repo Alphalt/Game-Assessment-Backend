@@ -16,5 +16,21 @@ function getWinnerIdentifier(winner) {
     return winnerIdentifier;
 }
 
+function getCountOfPoints(winnersIdentifiers) {
+    return winnersIdentifiers.reduce((count, winner) => {
+        count[winner] = (count[winner] || 0) + 1;
+        return count;
+    }, {});
+}
+
+function getGameWinner(countWinners) {
+    if(countWinners['0'] === countWinners['1'] && countWinners['0'] === countWinners['2']) return PlayersIdentifiers.TIE;
+    if(countWinners['0'] > countWinners['1'] && countWinners['0'] > countWinners['2']) return PlayersIdentifiers.TIE;
+    if(countWinners['1'] > countWinners['0'] && countWinners['1'] > countWinners['2']) return PlayersIdentifiers.PLAYERONE;
+    if(countWinners['2'] > countWinners['0'] && countWinners['2'] > countWinners['1']) return PlayersIdentifiers.PLAYERTWO;
+}
+
 exports.getRoundWinner = getRoundWinner;
 exports.getWinnerIdentifier = getWinnerIdentifier;
+exports.getCountOfPoints = getCountOfPoints;
+exports.getGameWinner = getGameWinner;
