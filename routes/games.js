@@ -46,6 +46,7 @@ router.put('/finish', async (req, res) => {
     const identifierOfWinner = getGameWinner(count);
 
     let winner = null;
+    
     game.players.map((player) => {
         if(player.number === parseInt(identifierOfWinner)) winner = player;
     });

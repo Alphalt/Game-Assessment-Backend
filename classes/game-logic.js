@@ -1,17 +1,18 @@
 const { Results } = require('../properties/results');
 const { PlayersIdentifiers } = require('../properties/players-identifier');
+const _ = require('lodash');
 
 function getRoundWinner(optionOne, optionTwo) {
     let result = null;
-    ((3 + optionTwo - optionOne) % 3) ? 1 === ((3 + optionTwo - optionOne) % 3) ? result=Results.LOSSES : result=Results.WINS : result=Results.TIES;
+    ((3 + optionTwo - optionOne) % 3) ? 1 === ((3 + optionTwo - optionOne) % 3) ? result = Results.LOSSES : result = Results.WINS : result = Results.TIES;
     return result;
 }
 
 function getWinnerIdentifier(winner) {
     let winnerIdentifier = null;
-    if(winner === Results.LOSSES) winnerIdentifier = PlayersIdentifiers.PLAYERTWO;
-    if(winner === Results.WINS) winnerIdentifier = PlayersIdentifiers.PLAYERONE;
-    if(winner === Results.TIES) winnerIdentifier = PlayersIdentifiers.TIE;
+    if (winner === Results.LOSSES) winnerIdentifier = PlayersIdentifiers.PLAYERTWO;
+    if (winner === Results.WINS) winnerIdentifier = PlayersIdentifiers.PLAYERONE;
+    if (winner === Results.TIES) winnerIdentifier = PlayersIdentifiers.TIE;
 
     return winnerIdentifier;
 }
@@ -24,10 +25,10 @@ function getCountOfPoints(winnersIdentifiers) {
 }
 
 function getGameWinner(countWinners) {
-    if(countWinners['0'] === countWinners['1'] && countWinners['0'] === countWinners['2']) return PlayersIdentifiers.TIE;
-    if(countWinners['0'] > countWinners['1'] && countWinners['0'] > countWinners['2']) return PlayersIdentifiers.TIE;
-    if(countWinners['1'] > countWinners['0'] && countWinners['1'] > countWinners['2']) return PlayersIdentifiers.PLAYERONE;
-    if(countWinners['2'] > countWinners['0'] && countWinners['2'] > countWinners['1']) return PlayersIdentifiers.PLAYERTWO;
+    let arr = Object.values(countWinners);
+    const max = Math.max(...arr);
+    const winner = (_.invert(countWinners))[max];
+    return winner;
 }
 
 exports.getRoundWinner = getRoundWinner;
