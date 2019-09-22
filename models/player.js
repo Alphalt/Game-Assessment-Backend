@@ -4,13 +4,11 @@ const Joi = require('joi');
 const playerSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
         minlength: 5,
         maxlength: 255
     },
     number: {
         type: Number,
-        required: true
     }
 });
 
@@ -26,4 +24,5 @@ function validatePlayer(player) {
 }
 
 exports.Player = Player;
+exports.playerSchema = playerSchema;
 exports.validatePlayer = validatePlayer;
