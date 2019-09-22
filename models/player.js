@@ -4,7 +4,6 @@ const Joi = require('joi');
 const playerSchema = new mongoose.Schema({
     name: {
         type: String,
-        minlength: 5,
         maxlength: 255
     },
     number: {
@@ -16,7 +15,7 @@ const Player = mongoose.model('Player', playerSchema);
 
 function validatePlayer(player) {
     const schema = {
-        name: Joi.string().min(5).max(255).required(),
+        name: Joi.string().max(255).required(),
         number: Joi.number().required()
     }
 
